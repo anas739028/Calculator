@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculator</title>
+  <style>
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      background: linear-gradient(to right, #00a4ff, #00e0ff); /* Change gradient colors as desired */
+      font-family: 'Arial', sans-serif;
+    }
+
+    #calculator {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      max-width: 300px;
+      margin: auto;
+      padding: 20px;
+      background-color: rgba(255, 255, 255, 0.9);
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    }
+
+    input {
+      grid-column: span 4;
+      padding: 10px;
+      font-size: 1.5em;
+      text-align: right;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      outline: none;
+    }
+
+    button {
+      padding: 15px;
+      font-size: 1.2em;
+      text-align: center;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button.operator {
+      background-color: #ff8c00;
+      color: #fff;
+    }
+
+    button.equal {
+      background-color: #4caf50;
+      color: #fff;
+    }
+
+    button.reset {
+      background-color: #dc3545;
+      color: #fff;
+    }
+
+    button.delete, button.ac {
+      background-color: #007bff;
+      color: #fff;
+    }
+
+    button:hover {
+      background-color: #ddd;
+    }
+  </style>
+</head>
+<body>
+  <div id="calculator">
+    <input type="text" id="display" readonly>
+
+    <button onclick="appendCharacter('7')">7</button>
+    <button onclick="appendCharacter('8')">8</button>
+    <button onclick="appendCharacter('9')">9</button>
+    <button class="operator" onclick="appendCharacter('/')">/</button>
+
+    <button onclick="appendCharacter('4')">4</button>
+    <button onclick="appendCharacter('5')">5</button>
+    <button onclick="appendCharacter('6')">6</button>
+    <button class="operator" onclick="appendCharacter('*')">*</button>
+
+    <button onclick="appendCharacter('1')">1</button>
+    <button onclick="appendCharacter('2')">2</button>
+    <button onclick="appendCharacter('3')">3</button>
+    <button class="operator" onclick="appendCharacter('-')">-</button>
+
+    <button onclick="appendCharacter('0')">0</button>
+    <button onclick="appendCharacter('.')">.</button>
+    <button class="equal" onclick="calculate()">=</button>
+    <button class="operator" onclick="appendCharacter('+')">+</button>
+
+    <button class="reset" onclick="resetCalculator()">C</button>
+    <button class="delete" onclick="backspace()">DEL</button>
+    <button class="ac" onclick="clearAll()">AC</button>
+  </div>
+
+  <script>
+    function resetCalculator() {
+      document.getElementById('display').value = '';
+    }
+
+    function backspace() {
+      const display = document.getElementById('display');
+      display.value = display.value.slice(0, -1);
+    }
+
+    function clearAll() {
+      document.getElementById('display').value = '';
+    }
+
+    function calculate() {
+      const display = document.getElementById('display');
+      try {
+        display.value = eval(display.value);
+      } catch (error) {
+        display.value = 'Error';
+      }
+    }
+
+    function appendCharacter(character) {
+      const display = document.getElementById('display');
+      display.value += character;
+    }
+
+    // Allow keyboard input
+    document.addEventListener('keydown', function (event) {
+      const key = event.key;
+      const validKeys = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.', '+', '-', '*', '/'];
+
+      if (validKeys.includes(key)) {
+        appendCharacter(key);
+      } else if (key === 'Enter') {
+        calculate();
+      } else if (key === 'Delete') {
+        resetCalculator();
+      } else if (key === 'Backspace') {
+        backspace();
+      }
+    });
+  </script>
+</body>
+</html>
